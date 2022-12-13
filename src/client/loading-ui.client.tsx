@@ -3,6 +3,18 @@ import Roact from "@rbxts/roact";
 
 const PlayerGui = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
 
+let AssetsLoaded = 0
+let AssetsToLoad = game.GetDescendants()
+
+spawn(() => {
+    game.GetDescendants().forEach(Asset => {
+        ContentProvider.PreloadAsync([Asset]);
+
+        AssetsLoaded += 1;
+        AssetsToLoad = game.GetDescendants()
+    })
+})
+
 class LoadingBar extends Roact.Component {
     running = false;
     loadingbarref: Roact.Ref<Frame>
@@ -58,18 +70,6 @@ class LoadingBar extends Roact.Component {
         })
     }
 }
-
-let AssetsLoaded = 0
-let AssetsToLoad = game.GetDescendants()
-
-spawn(() => {
-    game.GetDescendants().forEach(Asset => {
-        ContentProvider.PreloadAsync([Asset]);
-
-        AssetsLoaded += 1;
-        AssetsToLoad = game.GetDescendants()
-    })
-})
 
 const LoadingUI = <screengui IgnoreGuiInset={true}>
     <frame
