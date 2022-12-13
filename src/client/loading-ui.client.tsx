@@ -43,8 +43,6 @@ class LoadingBar extends Roact.Component {
     }
 
     didMount() {
-        this.running = true;
-
         const LoadingBar = this.loadingbarref.getValue() as Frame;
 
         spawn(() => {
@@ -58,10 +56,6 @@ class LoadingBar extends Roact.Component {
 
             TweenService.Create(LoadingBar, new TweenInfo(1, Enum.EasingStyle.Sine), {BackgroundColor3: Color3.fromRGB(0, 255, 0)}).Play();
         })
-    }
-
-     willUnmount() {
-        this.running = false;
     }
 }
 
