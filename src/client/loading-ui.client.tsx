@@ -79,7 +79,7 @@ const LoadingUI = <screengui
     IgnoreGuiInset={true}
     ResetOnSpawn={false}
     
-    DisplayOrder={-math.huge}>
+    DisplayOrder={10}>
 
         <frame
             Key="Background"
