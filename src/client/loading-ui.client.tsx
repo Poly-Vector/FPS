@@ -7,15 +7,20 @@ let AssetsLoaded = 0
 let AssetsToLoad = game.GetDescendants()
 
 spawn(() => {
+    AssetsToLoad = game.GetDescendants()
+
     game.GetDescendants().forEach(Asset => {
         ContentProvider.PreloadAsync([Asset]);
 
         AssetsLoaded += 1;
-        AssetsToLoad = game.GetDescendants()
     })
 })
 
-class LoadingBar extends Roact.Component {
+interface LoadingBarState {
+    AssetsLoaded: number
+}
+
+class LoadingBar extends Roact.Component<LoadingBarState> {
     running = false;
     loadingbarref: Roact.Ref<Frame>
 
@@ -48,8 +53,7 @@ class LoadingBar extends Roact.Component {
                         AnchorPoint={new Vector2(0.5, 0.5)}
                         
                         BackgroundColor3={Color3.fromRGB(255, 255, 255)}
-                        BorderSizePixel={0}
-    />
+                        BorderSizePixel={0}/>
             </frame>
         )
     }
@@ -71,24 +75,30 @@ class LoadingBar extends Roact.Component {
     }
 }
 
-const LoadingUI = <screengui IgnoreGuiInset={true}>
-    <frame
-        Key="Background"
+const LoadingUI = <screengui
+    IgnoreGuiInset={true}
+    ResetOnSpawn={false}
+    
+    DisplayOrder={math.huge}>
 
-        Size={new UDim2(1, 0, 1, 0)}
-        Position={new UDim2(0.5, 0, 0.5, 0)}
-        AnchorPoint={new Vector2(0.5, 0.5)}
+        <frame
+            Key="Background"
 
-        BackgroundColor3={Color3.fromRGB(0, 0, 0)}>
-            
-            <LoadingBar/>
-    </frame>
+            Size={new UDim2(1, 0, 1, 0)}
+            Position={new UDim2(0.5, 0, 0.5, 0)}
+            AnchorPoint={new Vector2(0.5, 0.5)}
+
+            BackgroundColor3={Color3.fromRGB(0, 0, 0)}>
+                
+                <LoadingBar/>
+        </frame>
 </screengui>
 
 const UITree = Roact.mount(LoadingUI, PlayerGui, "LoadingUI")
 
 while (AssetsLoaded !== AssetsToLoad.size()) {
     RunService.Stepped.Wait();
+    print(`${AssetsLoaded}/${AssetsToLoad.size()}`)
 }
 
 task.wait(1);
