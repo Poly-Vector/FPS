@@ -1,4 +1,4 @@
-import { Players, TweenService } from "@rbxts/services";
+import { Players, RunService, TweenService } from "@rbxts/services";
 import Roact from "@rbxts/roact";
 
 const PlayerGui = Players.LocalPlayer.WaitForChild("PlayerGui") as PlayerGui;
@@ -91,7 +91,7 @@ class Button extends Roact.Component<ButtonProps> {
     }
 }
 
-const MenuUi = <screengui>
+const MenuUI = <screengui>
     <Button
         key="Play"
         text="Play"
@@ -99,4 +99,9 @@ const MenuUi = <screengui>
         position={new UDim2(0.5, 0, 0.5, 0)}/>
 </screengui>
 
-Roact.mount(MenuUi, PlayerGui, "MenuUi");
+
+while (PlayerGui.FindFirstChild("LoadingUI") !== undefined) {
+    RunService.Stepped.Wait();
+}
+
+Roact.mount(MenuUI, PlayerGui, "MenuUI");
