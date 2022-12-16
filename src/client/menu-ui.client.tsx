@@ -8,7 +8,7 @@ const TweenProperties = new TweenInfo(
     Enum.EasingStyle.Sine
 );
 
-interface ButtonProps {
+interface UIProps {
     key: string,
     text: string,
 
@@ -16,11 +16,11 @@ interface ButtonProps {
     position: UDim2,
 }
 
-class Button extends Roact.Component<ButtonProps> {
+class Button extends Roact.Component<UIProps> {
     textlabel: Roact.Ref<TextLabel>
     textbuttonframe: Roact.Ref<Frame>
 
-    constructor(props: ButtonProps) {
+    constructor(props: any) {
         super(props);
 
         this.textlabel = Roact.createRef<TextLabel>();
@@ -58,7 +58,7 @@ class Button extends Roact.Component<ButtonProps> {
 
                         Font={Enum.Font.GothamBlack}
                         TextColor3={Color3.fromRGB(255, 255, 255)}
-                        TextSize={48}
+                        TextSize={12}
 
                         Size={new UDim2(1, 0, 1, 0)}
                         Position={new UDim2(0.5, 0, 0.5, 0)}
@@ -69,11 +69,12 @@ class Button extends Roact.Component<ButtonProps> {
                                 
                         Event={{
                             MouseEnter: () => {
-                                (this.textlabel.getValue() as TextLabel).TextColor3 = Color3.fromRGB(0, 0, 0)
+                                (this.textlabel.getValue() as TextLabel).TextColor3 = Color3.fromRGB(0, 0, 0);
+
                                 TweenService.Create((this.textbuttonframe.getValue() as Frame), TweenProperties, {
                                     Size: new UDim2(1, 0, 1, 0),
                                     Transparency: 0
-                                }).Play()
+                                }).Play();
                             },
 
                             MouseLeave: () => {
@@ -91,12 +92,36 @@ class Button extends Roact.Component<ButtonProps> {
     }
 }
 
+class Label extends Roact.Component<UIProps> {
+    render() {
+        return (
+            <textlabel
+                Key={this.props.key}
+                Text={this.props.text.upper()}
+
+                Font={Enum.Font.GothamBlack}
+                TextColor3={Color3.fromRGB(255, 255, 255)}
+                TextSize={12}
+
+                Size={this.props.size}
+                Position={this.props.position}
+                AnchorPoint={new Vector2(0.5, 0.5)}
+                ZIndex={5}
+
+                BorderSizePixel={2}
+                BorderColor3={Color3.fromRGB(255, 255, 255)}
+
+                BackgroundColor3 = {Color3.fromRGB(0, 0, 0)}/>
+        )
+    }
+}
+
 const MenuUI = <screengui>
     <Button
-        key="Play"
-        text="Play"
-        size={new UDim2(0.15, 0, 0.1, 0)}
-        position={new UDim2(0.5, 0, 0.5, 0)}/>
+        key="Deploy"
+        text="Deploy"
+        size={new UDim2(0.15, 0, 0.05, 0)}
+        position={new UDim2(0.915, 0, 0.95, 0)}/>
 </screengui>
 
 
